@@ -17,6 +17,13 @@
 
                                 <label for="category">category</label>
                                 <input name="category" placeholder="Enter category" type="text" id="category" class="form-control" >
+                                <select name="category_id" class="form-control my-3" id="categoryId">
+                                    <option disabled selected>Select a Parent category</option>
+                                    @foreach ($categories as $category)
+                                    <option value="{{$category->id}}">{{$category->category}}</option>
+                                        
+                                    @endforeach
+                                </select>
                                 <button type="submit" class="btn btn-primary w-100 mt-3">Submit</button>
 
                             </form>
@@ -56,11 +63,11 @@
                             <th>Action</th>
                         </tr>
                         
-                        @forelse ($categories as $key => $category)
+                        @forelse ($parentCategories as $key => $category)
                         <tr class="text-center">
                             <td>{{  ++$key }}</td>
-                            <td>{{$category->category}}</td>
-                            <td>{{$category->category_slug}}</td>
+                            <td>{{ucwords($category->category)}}</td>
+                            <td>{{ucwords($category->category_slug)}}</td>
                             <td>
                                 <div class="btn-group">
                                     <a href="{{route('categoryEdit', $category->id)}}" class="btn btn-info btn-sm">Edit</a>
@@ -68,6 +75,21 @@
                                 </div>
                             </td>
                         </tr>
+                       @if ($category->subCategories)
+                       @foreach ($category->subCategories as $subcategory)
+                           
+                      
+                           <tr class="text-center">
+                            <td>--</td>
+                            <td>{{$subcategory->category}}</td>
+                            <td>{{ucwords($subcategory->category_slug)}}</td>
+                            <td>
+                                                            
+                            </td>
+                        </tr>
+                        @endforeach
+                        @endif
+                        
                         @empty
                             <tr>
                                 <td>No Data Found</td>
